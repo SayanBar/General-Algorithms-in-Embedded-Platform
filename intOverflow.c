@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #define FAIL 0
 #define SUCCESS 1
-#define ASCII_SIZE 10
+
 
  
 /* Takes pointer to result and two numbers as
