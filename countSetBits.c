@@ -1,4 +1,4 @@
-//Count number of set bits
+//To count number of set bits
 
 #include <stdio.h>
 #include <inttypes.h>
