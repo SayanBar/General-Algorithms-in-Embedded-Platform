@@ -7,9 +7,6 @@
 #define FAIL 0
 #define ASCII_SIZE 10
 
-
-
-# include<stdio.h>
  
 int16_t multiplyBySeven(int16_t n)
 {  
