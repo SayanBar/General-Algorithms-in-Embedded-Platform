@@ -1,4 +1,4 @@
-//Swao two numbers using XOR
+//Swap two numbers using XOR
 
 #include <stdio.h>
 #include <inttypes.h>
