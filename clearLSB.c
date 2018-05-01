@@ -28,3 +28,5 @@ int16_t clearRightmostSetBit(int16_t num)
     result=num & (~(1<<(pos-1)));
     return result;
 }
+
+
