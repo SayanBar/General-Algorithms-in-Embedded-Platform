@@ -35,7 +35,7 @@ uint8_t powerOf4ornegative4(int16_t num)
         num=-num;
     }
         
-    if(!(num & (num-1) )){
+    if(num && (!(num & (num-1) ))){
         int16_t res=((int)(log2(num & -num)));
         if((res % 2==0) && negFlag==1 && (((res/2)%2)!=0) )
             return 1;
