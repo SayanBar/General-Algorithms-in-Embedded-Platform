@@ -1,5 +1,4 @@
-//Find Index of given element and find element at given index
-//Insert at end and print the linklist
+//Delete node without head
 
 #include <stdio.h>
 #include <inttypes.h>
