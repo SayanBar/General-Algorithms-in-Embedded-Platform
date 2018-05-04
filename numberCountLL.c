@@ -1,4 +1,4 @@
-//Detect and remove Loop in a Linklist
+//Frequency count of a key in a LL
 
 #include <stdio.h>
 #include <inttypes.h>
