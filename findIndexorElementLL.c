@@ -73,7 +73,7 @@ int8_t GetN(struct Node *head,int8_t index)
         temp=temp->link;
         count++;
     }
-    return -1;
+    return FAIL;
 }
 
 uint8_t GetIndex(struct Node* head,int8_t data)
