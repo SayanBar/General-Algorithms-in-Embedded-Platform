@@ -67,7 +67,9 @@ void print(struct Node *head)
 
 struct Node* returnMid(struct Node *head)
 {
-    struct Node *slow=head,*fast=head;
+    struct Node *slow=(struct Node*)malloc(sizeof(struct Node));
+    slow=head;
+	struct Node *fast=head;
     while(fast && fast->link){
         slow=slow->link;
         fast=fast->link->link;
