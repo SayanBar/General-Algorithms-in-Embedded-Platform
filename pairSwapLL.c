@@ -1,4 +1,4 @@
-//Move last element to front of a given Linked List
+//Pairwise swap of elements in LL
 
 #include <stdio.h>
 #include <inttypes.h>
