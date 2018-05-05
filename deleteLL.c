@@ -77,6 +77,8 @@ void print(struct Node *head)
 
 void deleteLL(struct Node **head_ref)
 {
+	if((*head_ref)==NULL)
+		return;
     struct Node *temp=*head_ref;
     struct Node *next;
     while(temp){
