@@ -1,4 +1,4 @@
-//Delete at Head End & Position in a DLL
+//Insert and Delete at Head End & Position in a DLL
 
 #include <stdio.h>
 #include <inttypes.h>
