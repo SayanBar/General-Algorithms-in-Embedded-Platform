@@ -1,5 +1,5 @@
 //Insert, Delete and Search BST
-//Preorder Inorder and PostOrder
+//Preorder Inorder and PostOrder Traversal
 
 #include <stdio.h>
 #include <inttypes.h>
