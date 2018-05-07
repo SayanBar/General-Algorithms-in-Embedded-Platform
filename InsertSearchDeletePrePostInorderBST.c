@@ -141,8 +141,8 @@ void Preorder(NodeBST *root)
 void Postorder(NodeBST *root){
     if(!root)
         return;
-    Preorder(root->left);
-    Preorder(root->right);
+    Postorder(root->left);
+    Postorder(root->right);
     printf("%d ",root->data);
 }
 
@@ -150,9 +150,9 @@ void Postorder(NodeBST *root){
 void Inorder(NodeBST *root){
     if(!root)
         return;
-    Preorder(root->left);
+    Inorder(root->left);
     printf("%d ",root->data);
-    Preorder(root->right);
+    Inorder(root->right);
 }
 
 NodeBST *FindMin(NodeBST *root)
