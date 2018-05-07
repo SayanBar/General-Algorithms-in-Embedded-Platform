@@ -1,4 +1,4 @@
-//Insert in a sorted array
+//Insert in a sorted Linked List
 
 #include <stdio.h>
 #include <inttypes.h>
@@ -17,7 +17,7 @@ struct Node{
 
 
 int8_t Push(struct Node **head_ref,int8_t);
-void insertSortedArray(struct Node **head, int8_t num);
+void insertSortedLL(struct Node **head, int8_t num);
 void print(struct Node *head);
 
 
@@ -35,7 +35,7 @@ int main()
     Push(&head,29);
     Push(&head,78);
     print(head);
-    insertSortedArray(&head,79);
+    insertSortedLL(&head,79);
     print(head);
 }
 
@@ -67,7 +67,7 @@ void print(struct Node *head)
     }
 }
 
-void insertSortedArray(struct Node **head, int8_t num)
+void insertSortedLL(struct Node **head, int8_t num)
 {
     struct Node *newNode=(struct Node *) malloc(sizeof(struct Node));
     if(newNode==NULL)
