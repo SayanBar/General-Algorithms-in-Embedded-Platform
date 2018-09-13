@@ -1,117 +1,119 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdint.h>
+
+# include <stdint.h>
+# include <stdlib.h>
+
+typedef struct circ_buff_t{
+	uint8_t * buff;
+	uint8_t * head;
+	uint8_t * tail;
+	uint32_t count;
+	uint32_t size;
+}circ_buff;
+
+circ_buff * circ_ptr;
+circ_buff * circ_pre;
+
+typedef enum {
+	FULL,EMPTY,NO,INVALID_POINTER,SUCCESS,WRAP_AROUND_SUCCESS
+}rt;
+
+int8_t is_buffer_full(circ_buff * cb1);
+int8_t is_buffer_empty(circ_buff * cb1);
+int8_t initialize_buffer(circ_buff * cb1, uint32_t size);
+int8_t destroy_buffer(circ_buff * cb1);
+int8_t add_item(circ_buff * cb1, uint8_t data);
+int8_t remove_item(circ_buff * cb1);
+int8_t cirbuf_peak(circ_buff*cb1, uint8_t index);
 
 
-uint8_t* buff_initialize(circbuff *buffer)
+
+
+//allocates size to the buffer
+int8_t CircBuf_size(circ_buff * cb1)
 {
-	buffer= malloc(sizeof(circbuff));
-	uint8_t *new = (uint8_t*) calloc(1 , sizeof(uint8_t));
-	buffer->head=new;
-	buffer->tail=new;
-	buffer->start=new;
-	buffer->no_items= 0;
-	buffer->length = MAX;
-    return buffer->start;
+    cb1= malloc(sizeof(circ_buff));							//allocates memory in heap
+    return SUCCESS;
 }
 
-void buff_unallocate(circbuff *cb1)
+//checks if buffer is full
+int8_t is_buffer_full(circ_buff * cb1)
 {
-	free(cb1);
+	return (cb1->count == cb1->size)? FULL : NO;
 }
 
-buf_state buff_full(circbuff *cb1)  // Function checks if the buffer is full or not
-{
-    if (cb1->no_items == cb1->length)
-    {   // If the head is at the end of the buffer and tail is at the start then buffer is full
-        //or if head is one position behind the tail then also buffer is full
-        return buffer_is_full;
-    }
-    else
-    {
-        return buffer_is_not_full;
-    }
 
+//checks if buffer empty
+int8_t is_buffer_empty(circ_buff * cb1)
+{
+	return (cb1->count == 0)? EMPTY : NO;
 }
 
-buf_state buff_empty(circbuff *cb1)
+//initializes elements of the structure
+int8_t initialize_buffer(circ_buff * cb1, uint32_t size)
 {
-    // if head and tail of the buffer are at the same position then that means buffer is empty.
-    if(cb1->no_items==0)
-    {
-        return buffer_is_empty;
-    }
-    else
-    {
-        return buffer_is_not_empty;
-    }
+	if (!cb1)
+		return INVALID_POINTER;								//null pointer check
+	cb1->buff = (int8_t *)calloc(size,(sizeof(int8_t)));	//initialize memory in heap
+	cb1->head = cb1->buff;									//initially head and tail point to 0th poistion
+	cb1->tail = cb1->buff;
+	cb1->size = size;										//size initialized to parameter passed
+	cb1->count = 0;											//count = 0  initially
+	return SUCCESS;
 }
 
-buf_state buff_add(circbuff *cb1, uint8_t item)
+//used to disown the heap memory allocaed to the buffer
+int8_t destroy_buffer(circ_buff * cb1)
 {
-
-    buf_state code;
-    code=buff_full(cb1);  // before adding new item it checks if buffer is full or not
-    if(code==buffer_is_not_full)
-    {
-        if(cb1->head==(cb1->start)+(cb1->length)-1)
-        {
-          cb1->head=cb1->start;
-        *(cb1->head)=item;
-        (cb1->no_items)++;
-        return add_to_buffer_success_with_wrap_around;
-        }
-
-        else
-        {      	// otherwise add the item at the location of head and then head++
-            cb1->head++;
-            *(cb1->head)=item;
-            (cb1->no_items)++;
-            return add_to_buffer_success;
-
-        }
-
-
-    }
-    else if(code==buffer_is_full)
-    { // If buffer is full , do not add item and return error
-      return buffer_is_full;
-    }
-
+	if (!cb1)												//null pointer check
+		return INVALID_POINTER;
+	free(cb1->buff);
+	return SUCCESS;
 }
 
-uint8_t buff_remove(circbuff *cb1)
+//adds item to circular buffer
+int8_t add_item(circ_buff * cb1, uint8_t data)
 {
-    buf_state code;
-	uint8_t rd;
-    code=buff_empty(cb1);  // check for buffer empty before removing item
-    if(code==buffer_is_not_empty)
-    {
-
-        if(cb1->tail==((cb1->start)+(cb1->length))-1)
-        {  // if tail is at the last position of the buffer then remove the item there
-         //and then put tail at the base address of the buffer
-
-        cb1->tail=cb1->start;
-		rd=*(cb1->tail);
-        *(cb1->tail)=0;
-        (cb1->no_items)--;
-        return rd;
-        }
-
-        else
-        {  // otherwise remove the item at the location of tail and then do tail++
-            (cb1->tail)++;
-			rd=*(cb1->tail);
-            *(cb1->tail)=0;
-            (cb1->no_items)--;
-            return rd;
-
-        }
-    }
-    else if(code==buffer_is_empty)
-    { // If buffer is empty , do not remove item and return error
-      return -1;
-    }
+	if (!cb1)
+		return INVALID_POINTER;								//null pointer check
+	if(cb1){
+		if(cb1->head==cb1->buff+cb1->size-1){				//if last position reached
+			*(cb1->head)=data;								//put data in last position
+			cb1->head=cb1->buff;							//reset the head to starting address
+			cb1->count++;
+			return WRAP_AROUND_SUCCESS;
+		}
+		else{
+			*(cb1->head)=data;								//else enter data in next position
+			cb1->head++;
+			cb1->count++;
+			return SUCCESS;
+		}
+	}
 }
 
+//remove item from circular buffer
+int8_t remove_item(circ_buff * cb1)
+{
+	if (!cb1)
+		return INVALID_POINTER;								//null pointer check
+	if(cb1){
+		if(cb1->tail==cb1->buff+cb1->size-1){				//if last position reached
+			cb1->tail=cb1->buff;							//reset pointer to buff
+			cb1->count--;
+			return *(cb1->buff+cb1->size-1);				//return last position data
+		}
+		else{
+			cb1->tail++;
+			cb1->count--;
+			return *(cb1->tail-1);							//else increament tail and return data
+		}
+	}
+}
+
+//dereference the required position and return
+int8_t cirbuf_peak(circ_buff*cb1, uint8_t index)
+{
+    uint8_t data;
+    data =  *(cb1->buff+index);								//checks the data by dereferencing the pointer at the index
+    return data;
+}
